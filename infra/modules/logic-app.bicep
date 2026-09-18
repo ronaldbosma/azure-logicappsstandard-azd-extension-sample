@@ -27,6 +27,9 @@ param logicAppName string
 @description('The name of the service as used by azd')
 param azdServiceName string
 
+@description('The name of the App Insights instance that will be used by the Logic App')
+param appInsightsName string
+
 @description('Name of the storage account that will be used by the Logic App')
 param storageAccountName string
 
@@ -38,6 +41,9 @@ param storageAccountName string
 // In this case the logic app workflow(s) and related assets.
 var serviceTags { *: string } = union(tags, {
   'azd-service-name': azdServiceName
+
+  // Associate the Logic App with the App Insights instance in order for the Run tab under "Monitoring > Insights" to work properly in the Azure Portal.
+  'hidden-link: /app-insights-resource-id': appInsights.id
 })
 
 // Construct the storage account connection string
@@ -46,6 +52,8 @@ var storageAccountConnectionString string = 'DefaultEndpointsProtocol=https;Acco
 
 var appSettings resourceInput<'Microsoft.Web/sites/config@2025-03-01'>.properties = {
   APP_KIND: 'workflowApp'
+  APPLICATIONINSIGHTS_AUTHENTICATION_STRING: 'Authorization=AAD'
+  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
   AzureFunctionsJobHost__extensionBundle__id: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
   AzureFunctionsJobHost__extensionBundle__version: '[1.*, 2.0.0)'
   AzureWebJobsStorage: storageAccountConnectionString
@@ -56,9 +64,15 @@ var appSettings resourceInput<'Microsoft.Web/sites/config@2025-03-01'>.propertie
   WEBSITE_NODE_DEFAULT_VERSION: '~22'
 }
 
+var monitoringMetricsPublisherRoleId string = roleDefinitions('Monitoring Metrics Publisher').id
+
 //=============================================================================
 // Existing resources
 //=============================================================================
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
+  name: appInsightsName
+}
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2025-03-01' existing = {
   name: appServicePlanName
@@ -101,6 +115,18 @@ module setLogicAppSettings '../shared/merge-app-settings.bicep' = {
     siteName: logicAppName
     currentAppSettings: list('${logicApp.id}/config/appsettings', logicApp.apiVersion).properties
     newAppSettings: appSettings
+  }
+}
+
+// Assign roles to the principal
+
+resource assignMonitoringMetricsPublisherToPrincipal 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(appInsights.id, logicAppName, monitoringMetricsPublisherRoleId)
+  scope: appInsights
+  properties: {
+    roleDefinitionId: monitoringMetricsPublisherRoleId
+    principalId: logicApp.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
