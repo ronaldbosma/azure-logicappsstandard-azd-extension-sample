@@ -115,7 +115,7 @@ module setLogicAppSettings '../shared/merge-app-settings.bicep' = {
   }
 }
 
-// Assign role Application Insights to the principal
+// Assign roles to the principal
 
 resource assignMonitoringMetricsPublisherToPrincipal 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(appInsights.id, logicAppName, monitoringMetricsPublisherRoleId)
