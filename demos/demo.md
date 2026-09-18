@@ -24,7 +24,7 @@ Then review the [azure.yaml](/azure.yaml) to show how the extension can be used:
 
 Run `azd package <service>` to package the services and review the contents of the generated `.zip` file.
 
-### Test the workflows
+### Verify the deployment
 
 Each Logic App includes a test workflow with an HTTP request trigger that can be used to verify whether the deployment was successful.
 The following sections describe how to test the workflows manually or by using the automated integration tests.
