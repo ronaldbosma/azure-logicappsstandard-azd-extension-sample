@@ -98,16 +98,10 @@ namespace IntegrationTests.Clients
         /// <exception cref="ObjectDisposedException">Thrown when the client has been disposed.</exception>
         public async Task<HttpResponseMessage> PostAsync<T>(T data)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
-
-            var httpClient = await _httpClientLazy.Value;
-
-            var requestUri = string.Empty; // The callback URL is already set as the BaseAddress
-
             var json = JsonSerializer.Serialize(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            return await httpClient.PostAsync(requestUri, content);
+            return await PostAsync(content);
         }
 
         /// <summary>
@@ -118,13 +112,17 @@ namespace IntegrationTests.Clients
         /// <exception cref="ObjectDisposedException">Thrown when the client has been disposed.</exception>
         public async Task<HttpResponseMessage> PostAsync(string data)
         {
+            var content = new StringContent(data, Encoding.UTF8, "text/plain");
+            return await PostAsync(content);
+        }
+
+        private async Task<HttpResponseMessage> PostAsync(StringContent content)
+        {
             ObjectDisposedException.ThrowIf(_disposed, this);
 
             var httpClient = await _httpClientLazy.Value;
 
             var requestUri = string.Empty; // The callback URL is already set as the BaseAddress
-
-            var content = new StringContent(data, Encoding.UTF8, "text/plain");
 
             return await httpClient.PostAsync(requestUri, content);
         }
