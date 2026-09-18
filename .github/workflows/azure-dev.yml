@@ -72,6 +72,7 @@ jobs:
           az version
           az bicep version
           azd version
+          Write-Host "azd extensions:"
           azd ext list
           Write-Host ".NET SDK Version: $(dotnet --version)"
 
