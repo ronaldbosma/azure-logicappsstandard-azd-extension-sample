@@ -60,7 +60,7 @@ The [Demo Guide](demos/demo.md) provides a step-by-step walkthrough on how to te
 
 ### Clean up
 
-Once you're done and want to clean up, run the `azd down` command. By including the `--purge` parameter, you ensure that the API Management service and Log Analytics workspace don't remain in a soft-deleted state, which could cause issues with future deployments of the same environment.
+Once you're done and want to clean up, run the `azd down` command. By including the `--purge` parameter, you ensure that the Log Analytics workspace doesn't remain in a soft-deleted state, which could cause issues with future deployments of the same environment.
 
 ```cmd
 azd down --purge
