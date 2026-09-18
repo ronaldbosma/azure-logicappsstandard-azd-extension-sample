@@ -8,6 +8,12 @@ services:
     project: ./src/logicAppWithoutCode
     host: function
     language: logicappsstandard
+  logicAppWithCode:
+    project: ./src/logicAppWithCode
+    dist: Workflows
+    host: function
+    language: logicappsstandard
+    customCodeProject: Functions/Functions.csproj
 requiredVersions:
   azd: ">= 1.28.1" # azd version 1.28.1 or higher is required because we're using features from Bicep v0.45.6.
   extensions:
