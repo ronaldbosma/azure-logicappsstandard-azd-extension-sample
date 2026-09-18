@@ -1,13 +1,10 @@
-# Azure logic apps artifacts
-bin
-obj
-appsettings.json
-local.settings.json
-__blobstorage__
 .debug
-__queuestorage__
+.git*
+.vscode
 __azurite_db*__.json
-
-# Added folders and file patterns
+__blobstorage__
+__queuestorage__
+global.json
+local.settings.json
+test
 workflow-designtime/
-*.code-workspace
