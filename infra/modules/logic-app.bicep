@@ -104,16 +104,6 @@ module setLogicAppSettings '../shared/merge-app-settings.bicep' = {
   }
 }
 
-// Assign roles to system-assigned identity of Logic App
-
-module assignRolesToLogicAppSystemAssignedIdentity '../shared/assign-roles-to-principal.bicep' = {
-  params: {
-    principalId: logicApp.identity.principalId
-    principalType: 'ServicePrincipal'
-    storageAccountName: storageAccountName
-  }
-}
-
 //=============================================================================
 // Outputs
 //=============================================================================

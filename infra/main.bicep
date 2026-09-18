@@ -102,17 +102,6 @@ module logicAppWithCode 'modules/logic-app.bicep' = {
   ]
 }
 
-module assignRolesToDeployer 'shared/assign-roles-to-principal.bicep' = {
-  scope: resourceGroup
-  params: {
-    principalId: deployer().objectId
-    storageAccountName: storageAccountName
-  }
-  dependsOn: [
-    storageAccount
-  ]
-}
-
 //=============================================================================
 // Outputs
 //=============================================================================
