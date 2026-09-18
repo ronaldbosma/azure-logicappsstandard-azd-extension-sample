@@ -1,6 +1,8 @@
 # Sample for azure.logicappsstandard azd extension
 
-An Azure Developer CLI (`azd`) template using Bicep that demonstrates the use of the azure.logicappsstandard extension. See [azure.yaml](azure.yaml) for how to use the extension and the [Getting Started](#getting-started) section for how to install it.
+An Azure Developer CLI (`azd`) template using Bicep that demonstrates the use of the azure.logicappsstandard extension. 
+This template deploys two Logic Apps: one is a basic Logic App; the other has a custom code project using .NET 8.
+See [azure.yaml](azure.yaml) for how to use the extension and the [Getting Started](#getting-started) section for how to install it.
 
 ## Getting Started
 
