@@ -90,6 +90,7 @@ module logicAppWithoutCode 'modules/logic-app.bicep' = {
     appServicePlanName: appServicePlanName
     azdServiceName: 'logicAppWithoutCode'
     logicAppName: logicAppWithoutCodeName
+    appInsightsName: appInsightsName
     storageAccountName: storageAccountName
   }
   dependsOn: [
@@ -107,6 +108,7 @@ module logicAppWithCode 'modules/logic-app.bicep' = {
     appServicePlanName: appServicePlanName
     azdServiceName: 'logicAppWithCode'
     logicAppName: logicAppWithCodeName
+    appInsightsName: appInsightsName
     storageAccountName: storageAccountName
   }
   dependsOn: [
