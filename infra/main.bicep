@@ -20,7 +20,7 @@ import { tagsType } from 'shared/types.bicep'
 param location string
 
 @minLength(1)
-@maxLength(32)
+@maxLength(30)
 @description('The name of the environment to deploy to')
 param environmentName string
 

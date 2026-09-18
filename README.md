@@ -30,7 +30,7 @@ Once the prerequisites are installed on your machine, you can deploy this templa
    azd init --template ronaldbosma/azure-logicappsstandard-azd-extension-sample
    ```
 
-   When prompted, specify the name of the environment (for example, `azdlogicappsext`). The maximum length is 32 characters.
+   When prompted, specify the name of the environment (for example, `azdlogicappsext`). The maximum length is 30 characters.
 
 1. Run the `azd auth login` command to authenticate to your Azure subscription using the **Azure Developer CLI** _(if you haven't already)_.
 
