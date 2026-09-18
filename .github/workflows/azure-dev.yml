@@ -8,6 +8,11 @@ on:
         required: false
         default: true
         type: boolean
+      logicappsstandard-extension-id-or-url:
+        description: "ID or URL of the azure.logicappsstandard azd extension to use"
+        required: false
+        default: "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+        type: string
   pull_request:
     # Also trigger on ready_for_review to catch the transition from draft to ready state.
     types: [opened, synchronize, reopened, ready_for_review]
@@ -30,6 +35,9 @@ env:
   AZURE_ENV_NAME: ${{ github.event.pull_request.number && format('{0}-pr{1}', vars.AZURE_ENV_NAME, github.event.pull_request.number) || vars.AZURE_ENV_NAME }}
   AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID || vars.AZURE_SUBSCRIPTION_ID }}
+  # Configure the ID/URL of the azure.logicappsstandard azd extension to use
+  # By using a variable, we can default to the standard extension but override this with e.g. a prerelease build if needed.
+  AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.logicappsstandard-extension-id-or-url || 'https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip' }}
 
 jobs:
   # ------------------------------------------------------------
@@ -52,7 +60,7 @@ jobs:
 
       - name: Setup azure.logicappsstandard azd extension
         run: |
-          azd ext install "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+          azd ext install "$env:AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL"
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v6
@@ -157,7 +165,7 @@ jobs:
 
       - name: Setup azure.logicappsstandard azd extension
         run: |
-          azd ext install "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+          azd ext install "$env:AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL"
 
       # Use Azure CLI authentication with azd commands so credentials are shared between azd commands and az (Azure CLI) commands used in hooks.
       - name: Configure azd to use Azure CLI Authentication
@@ -280,7 +288,7 @@ jobs:
 
       - name: Setup azure.logicappsstandard azd extension
         run: |
-          azd ext install "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+          azd ext install "$env:AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL"
 
       # Use Azure CLI authentication with azd commands so credentials are shared between azd commands and az (Azure CLI) commands used in hooks.
       - name: Configure azd to use Azure CLI Authentication
