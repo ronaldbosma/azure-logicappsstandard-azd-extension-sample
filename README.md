@@ -38,6 +38,12 @@ Once the prerequisites are installed on your machine, you can deploy this templa
    azd auth login
    ```
 
+1. Install the azure.logicappsstandard extension (_is currently a prerelease_):
+
+   ```cmd
+   azd ext install "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+   ```
+
 1. Run the `azd up` command to provision the resources in your Azure subscription. This deployment typically takes around 2 minutes to complete. _(Use `azd provision` to only deploy the infrastructure.)_
 
    ```cmd
@@ -130,6 +136,31 @@ The tests send the same test requests described in the [Demo](./demos/demo.md) a
 They automatically locate your azd environment's `.env` file if available, to retrieve necessary configuration. In the [pipeline](#pipeline) they rely on environment variables set in the workflow.
 
 ## Troubleshooting
+
+### Required extension azure.logicappsstandard not found
+
+If you haven't installed the azd extension azure.logicappsstandard, you'll get the following error:
+
+```
+ERROR: required extension azure.logicappsstandard not found
+
+Suggestion: Check requiredVersions.extensions in azure.yaml, then run 'azd extension source list' to verify that a configured source publishes azure.logicappsstandard.
+```
+
+See the [Getting Started](#getting-started) section for instructions on how to install the extension.
+
+
+### Installed extension azure.logicappsstandard does not satisfy constraint
+
+The following error indicates that you do not have the correct version of the azd extension azure.logicappsstandard installed:
+
+```
+ERROR: installed extension azure.logicappsstandard version ... does not satisfy constraint "..."
+
+Suggestion: Run 'azd extension update azure.logicappsstandard' to move to the latest version, or 'azd extension install azure.logicappsstandard --version <version>' to select an exact version that satisfies "...".
+```
+
+Run `azd extension update azure.logicappsstandard` to move to the latest version, or `azd extension install azure.logicappsstandard --version <version>` to select an exact version that satisfies the required version.
 
 ### Logic App deployment failed because of quota limitations
 
