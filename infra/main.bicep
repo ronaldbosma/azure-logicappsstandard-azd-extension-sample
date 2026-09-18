@@ -123,4 +123,5 @@ output AZURE_TENANT_ID string = subscription().tenantId
 // Return the names of the resources
 output AZURE_LOGIC_APP_WITHOUT_CODE_NAME string = logicAppWithoutCodeName
 output AZURE_LOGIC_APP_WITH_CODE_NAME string = logicAppWithCodeName
+output AZURE_RESOURCE_GROUP string = resourceGroupName
 output AZURE_STORAGE_ACCOUNT_NAME string = storageAccountName
