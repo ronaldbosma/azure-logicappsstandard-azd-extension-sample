@@ -95,14 +95,17 @@ This template includes a GitHub Actions workflow that automates the build, deplo
 
 The pipeline consists of the following jobs:
 
-- **Build, Verify and Package**: This job sets up the build environment, validates the Bicep template and packages the Function App, Logic App and integration tests.
+- **Build, Verify and Package**: This job sets up the build environment, validates the Bicep template and packages the Logic Apps and integration tests.
 - **Deploy to Azure**: This job provisions the Azure infrastructure and deploys the packaged applications to the created resources.
 - **Verify Deployment**: This job runs automated [integration tests](#integration-tests) on the deployed resources to verify correct functionality.
 - **Clean Up Resources**: This job removes all deployed Azure resources.
 
-  By default, cleanup runs automatically after the deployment. This can be disabled via an input parameter when the workflow is triggered manually.
+When manually triggering the workflow, there are two input parameters you can set:
 
-  ![GitHub Actions Manual Trigger](images/github-actions-workflow-manual-trigger.png)
+1. **Clean up resources after deployment**: By default, cleanup runs automatically after the deployment. This can be disabled by unchecking this parameter.
+1. **ID or URL of the azure.logicappsstandard azd extension to use**: By default, the extension is installed from the official extension source registry. To install e.g. a prerelease version, specify the URL from where the extension can be installed. For example: `https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip`.
+
+   ![GitHub Actions Manual Trigger](images/github-actions-workflow-manual-trigger.png)
 
 For draft PRs, only the 'Build, Verify and Package' job is executed to avoid deploying from work-in-progress branches. When the PR is marked ready for review, the workflow will trigger and execute all jobs.
 
