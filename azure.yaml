@@ -3,5 +3,12 @@
 name: azure-logicappsstandard-azd-extension-sample
 metadata:
   template: azure-logicappsstandard-azd-extension-sample@0.1.0
+services:
+  logicAppWithoutCode:
+    project: ./src/logicAppWithoutCode
+    host: function
+    language: logicappsstandard
 requiredVersions:
   azd: ">= 1.28.1" # azd version 1.28.1 or higher is required because we're using features from Bicep v0.45.6.
+  extensions:
+    azure.logicappsstandard: ">= 0.1.0"
