@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -13,6 +14,9 @@ namespace IntegrationTests.Clients
     /// </summary>
     internal class LogicAppWorkflowClient : IDisposable
     {
+        private const int MaxRetryAttempts = 20;
+        private const int RetryDelayMilliseconds = 200;
+
         private readonly string _tenantId;
         private readonly string _subscriptionId;
         private readonly string _resourceGroupName;
@@ -83,11 +87,31 @@ namespace IntegrationTests.Clients
                 triggerName: _triggerName
             );
 
-            // Get the callback URL for the Logic App Standard workflow trigger
-            var workflowTrigger = armClient.GetWorkflowTriggerResource(workflowTriggerId);
-            var callbackUrl = await workflowTrigger.GetCallbackUrlAsync();
+            // Logic Apps can be a bit slow to start, so add a retry mechanism to retrieve the callback URL for the workflow trigger
+            for (int i = 1; i <= MaxRetryAttempts; i++)
+            {
+                try
+                {
+                    Trace.WriteLine($"{DateTime.UtcNow:o} - Attempt {i} to retrieve the callback URL for the Logic App workflow trigger: {workflowTriggerId}.");
 
-            return new IntegrationTestHttpClient(callbackUrl.Value.Value);
+                    // Get the callback URL for the Logic App Standard workflow trigger
+                    var workflowTrigger = armClient.GetWorkflowTriggerResource(workflowTriggerId);
+                    var callbackUrl = await workflowTrigger.GetCallbackUrlAsync();
+
+                    return new IntegrationTestHttpClient(callbackUrl.Value.Value);
+                }
+                // If the Logic App is for example unavailable, a 400 Bad Request response is returned, so we retry in that case
+                catch (Azure.RequestFailedException ex) when (ex.Status == (int)HttpStatusCode.BadRequest)
+                {
+                    if (i == MaxRetryAttempts)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(i * RetryDelayMilliseconds);
+                }
+            }
+
+            throw new InvalidOperationException("Failed to retrieve the Logic App workflow trigger callback URL after multiple attempts.");
         }
 
         /// <summary>
@@ -127,7 +151,7 @@ namespace IntegrationTests.Clients
             HttpResponseMessage response = null!;
 
             // Logic Apps can be a bit slow to start, so add a retry mechanism for 503 Service Unavailable responses
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < MaxRetryAttempts; i++)
             {
                 response = await httpClient.PostAsync(requestUri, content);
                 if (response.StatusCode != HttpStatusCode.ServiceUnavailable)
@@ -135,7 +159,7 @@ namespace IntegrationTests.Clients
                     break;
                 }
 
-                Thread.Sleep(i * 200);
+                Thread.Sleep(i * RetryDelayMilliseconds);
             }
 
             return response;
