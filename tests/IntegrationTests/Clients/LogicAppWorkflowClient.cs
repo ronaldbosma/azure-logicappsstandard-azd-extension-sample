@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -123,8 +124,21 @@ namespace IntegrationTests.Clients
             var httpClient = await _httpClientLazy.Value;
 
             var requestUri = string.Empty; // The callback URL is already set as the BaseAddress
+            HttpResponseMessage response = null!;
 
-            return await httpClient.PostAsync(requestUri, content);
+            // Logic Apps can be a bit slow to start, so add a retry mechanism for 503 Service Unavailable responses
+            for (int i = 0; i < 10; i++)
+            {
+                response = await httpClient.PostAsync(requestUri, content);
+                if (response.StatusCode != HttpStatusCode.ServiceUnavailable)
+                {
+                    break;
+                }
+
+                Thread.Sleep(i * 200);
+            }
+
+            return response;
         }
 
         public void Dispose()
