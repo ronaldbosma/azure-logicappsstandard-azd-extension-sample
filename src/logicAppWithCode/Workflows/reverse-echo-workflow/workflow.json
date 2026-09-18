@@ -8,7 +8,21 @@
                 "kind": "Http",
                 "inputs": {
                     "statusCode": 200,
-                    "body": "@triggerBody()"
+                    "body": "@body('Reverse_request')"
+                },
+                "runAfter": {
+                    "Reverse_request": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Reverse_request": {
+                "type": "InvokeFunction",
+                "inputs": {
+                    "functionName": "Reverse",
+                    "parameters": {
+                        "original": "@{triggerBody()}"
+                    }
                 },
                 "runAfter": {}
             }
