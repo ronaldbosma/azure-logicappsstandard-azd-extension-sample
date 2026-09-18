@@ -107,11 +107,11 @@ jobs:
 
       - name: Package Logic App Without Code
         run: |
-          azd package logicAppWithoutCode --output-path ./artifacts/logicAppWithoutCode-package.zip --no-prompt
+          azd package logicAppWithoutCode --output-path ./artifacts/logicapp-without-code-package.zip --no-prompt
 
       - name: Package Logic App With Code
         run: |
-          azd package logicAppWithCode --output-path ./artifacts/logicAppWithCode-package.zip --no-prompt
+          azd package logicAppWithCode --output-path ./artifacts/logicapp-with-code-package.zip --no-prompt
 
       - name: Build Integration Tests
         run: |
@@ -120,15 +120,15 @@ jobs:
       - name: Upload Logic App Without Code Package
         uses: actions/upload-artifact@v7
         with:
-          name: logicAppWithoutCode-package
-          path: ./artifacts/logicAppWithoutCode-package.zip
+          name: logicapp-without-code-package
+          path: ./artifacts/logicapp-without-code-package.zip
           retention-days: 1
 
       - name: Upload Logic App With Code Package
         uses: actions/upload-artifact@v7
         with:
-          name: logicAppWithCode-package
-          path: ./artifacts/logicAppWithCode-package.zip
+          name: logicapp-with-code-package
+          path: ./artifacts/logicapp-with-code-package.zip
           retention-days: 1
 
       - name: Upload Integration Tests Package
@@ -188,22 +188,22 @@ jobs:
       - name: Download Logic App Without Code Package
         uses: actions/download-artifact@v8
         with:
-          name: logicAppWithoutCode-package
+          name: logicapp-without-code-package
           path: ./artifacts
 
       - name: Deploy Logic App Without Code
         run: |
-          azd deploy logicAppWithoutCode --from-package ./artifacts/logicAppWithoutCode-package.zip --no-prompt
+          azd deploy logicAppWithoutCode --from-package ./artifacts/logicapp-without-code-package.zip --no-prompt
 
       - name: Download Logic App With Code Package
         uses: actions/download-artifact@v8
         with:
-          name: logicAppWithCode-package
+          name: logicapp-with-code-package
           path: ./artifacts
 
       - name: Deploy Logic App With Code
         run: |
-          azd deploy logicAppWithCode --from-package ./artifacts/logicAppWithCode-package.zip --no-prompt
+          azd deploy logicAppWithCode --from-package ./artifacts/logicapp-with-code-package.zip --no-prompt
 
       # Extract relevant azd environment variables and make them available as job outputs for subsequent jobs.
       - name: Get Output Variables
