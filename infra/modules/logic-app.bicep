@@ -41,6 +41,9 @@ param storageAccountName string
 // In this case the logic app workflow(s) and related assets.
 var serviceTags { *: string } = union(tags, {
   'azd-service-name': azdServiceName
+
+  // Associate the Logic App with the App Insights instance in order for the Run tab under "Monitoring > Insights" to work properly in the Azure Portal.
+  'hidden-link: /app-insights-resource-id': appInsights.id
 })
 
 // Construct the storage account connection string
