@@ -33,6 +33,8 @@ var instanceId string = generateInstanceId(environmentName, location)
 
 var resourceGroupName string = getResourceName('resourceGroup', environmentName, location, instanceId)
 var appServicePlanName = getResourceName('appServicePlan', environmentName, location, 'logicapp-${instanceId}')
+var appInsightsName string = getResourceName('applicationInsights', environmentName, location, instanceId)
+var logAnalyticsWorkspaceName string = getResourceName('logAnalyticsWorkspace', environmentName, location, instanceId)
 var logicAppWithoutCodeName = getResourceName('logicApp', environmentName, location, 'withoutcode-${instanceId}')
 var logicAppWithCodeName = getResourceName('logicApp', environmentName, location, 'withcode-${instanceId}')
 var storageAccountName string = getResourceName('storageAccount', environmentName, location, instanceId)
@@ -50,6 +52,16 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: location
   tags: tags
+}
+
+module appInsights 'modules/app-insights.bicep' = {
+  scope: resourceGroup
+  params: {
+    location: location
+    tags: tags
+    appInsightsName: appInsightsName
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+  }
 }
 
 module storageAccount 'modules/storage-account.bicep' = {
@@ -81,6 +93,7 @@ module logicAppWithoutCode 'modules/logic-app.bicep' = {
     storageAccountName: storageAccountName
   }
   dependsOn: [
+    appInsights
     appServicePlan
     storageAccount
   ]
@@ -97,6 +110,7 @@ module logicAppWithCode 'modules/logic-app.bicep' = {
     storageAccountName: storageAccountName
   }
   dependsOn: [
+    appInsights
     appServicePlan
     storageAccount
   ]
@@ -110,6 +124,8 @@ module logicAppWithCode 'modules/logic-app.bicep' = {
 output AZURE_TENANT_ID string = subscription().tenantId
 
 // Return the names of the resources
+output AZURE_APPLICATION_INSIGHTS_NAME string = appInsightsName
+output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = logAnalyticsWorkspaceName
 output AZURE_LOGIC_APP_WITHOUT_CODE_NAME string = logicAppWithoutCodeName
 output AZURE_LOGIC_APP_WITH_CODE_NAME string = logicAppWithCodeName
 output AZURE_RESOURCE_GROUP string = resourceGroupName
