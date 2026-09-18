@@ -27,7 +27,7 @@ namespace IntegrationTests.Clients.Handlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"[Request]: {request.Method} {request.RequestUri}");
+            Console.WriteLine($"[Request]: {request.Method} {request.RequestUri?.GetLeftPart(UriPartial.Path)}");
             Console.WriteLine(await GetContentAsync(request.Content, cancellationToken));
 
             var response = await base.SendAsync(request, cancellationToken);
