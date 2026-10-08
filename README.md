@@ -84,7 +84,7 @@ The repository consists of the following files and directories:
 │   └── logicAppWithCode       [ Logic App with .NET code project ]
 │   └── logicAppWithoutCode    [ Logic App without code ]
 ├── tests
-│   ├── IntegrationTests       [ Integration tests for automatically verifying different scenarios ]
+│   └── IntegrationTests       [ Integration tests for automatically verifying different scenarios ]
 ├── azure.yaml                 [ Describes the apps and types of Azure resources ]
 └── bicepconfig.json           [ Bicep configuration file ]
 ```
