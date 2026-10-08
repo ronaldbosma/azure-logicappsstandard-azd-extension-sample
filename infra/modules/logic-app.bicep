@@ -78,7 +78,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2025-03-01' existing = {
   name: appServicePlanName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2025-08-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2026-04-01' existing = {
   name: storageAccountName
 }
 
