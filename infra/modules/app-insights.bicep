@@ -33,7 +33,7 @@ param retentionInDays int = 30
 
 // Log Analytics Workspace
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-07-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2026-03-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   tags: tags
