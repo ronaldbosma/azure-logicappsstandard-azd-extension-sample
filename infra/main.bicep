@@ -8,7 +8,7 @@ targetScope = 'subscription'
 // Imports
 //=============================================================================
 
-import { getResourceName, generateInstanceId } from 'shared/naming-conventions.bicep'
+import { getResourceName, generateInstanceId, getStorageAccountNameForResource } from 'shared/naming-conventions.bicep'
 import { tagsType } from 'shared/types.bicep'
 
 //=============================================================================
@@ -36,8 +36,9 @@ var appServicePlanName = getResourceName('appServicePlan', environmentName, loca
 var appInsightsName string = getResourceName('applicationInsights', environmentName, location, instanceId)
 var logAnalyticsWorkspaceName string = getResourceName('logAnalyticsWorkspace', environmentName, location, instanceId)
 var logicAppWithoutCodeName = getResourceName('logicApp', environmentName, location, 'withoutcode-${instanceId}')
+var storageAccountNameForLogicAppWithoutCode string = getStorageAccountNameForResource(logicAppWithoutCodeName)
 var logicAppWithCodeName = getResourceName('logicApp', environmentName, location, 'withcode-${instanceId}')
-var storageAccountName string = getResourceName('storageAccount', environmentName, location, instanceId)
+var storageAccountNameForLogicAppWithCode string = getStorageAccountNameForResource(logicAppWithCodeName)
 
 var tags tagsType = {
   'azd-env-name': environmentName
@@ -64,12 +65,21 @@ module appInsights 'modules/app-insights.bicep' = {
   }
 }
 
-module storageAccount 'modules/storage-account.bicep' = {
+module storageAccountForLogicAppWithoutCode 'modules/storage-account.bicep' = {
   scope: resourceGroup
   params: {
     location: location
     tags: tags
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccountNameForLogicAppWithoutCode
+  }
+}
+
+module storageAccountForLogicAppWithCode 'modules/storage-account.bicep' = {
+  scope: resourceGroup
+  params: {
+    location: location
+    tags: tags
+    storageAccountName: storageAccountNameForLogicAppWithCode
   }
 }
 
@@ -91,12 +101,12 @@ module logicAppWithoutCode 'modules/logic-app.bicep' = {
     azdServiceName: 'logicAppWithoutCode'
     logicAppName: logicAppWithoutCodeName
     appInsightsName: appInsightsName
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccountNameForLogicAppWithoutCode
   }
   dependsOn: [
     appInsights
     appServicePlan
-    storageAccount
+    storageAccountForLogicAppWithoutCode
   ]
 }
 
@@ -109,12 +119,12 @@ module logicAppWithCode 'modules/logic-app.bicep' = {
     azdServiceName: 'logicAppWithCode'
     logicAppName: logicAppWithCodeName
     appInsightsName: appInsightsName
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccountNameForLogicAppWithCode
   }
   dependsOn: [
     appInsights
     appServicePlan
-    storageAccount
+    storageAccountForLogicAppWithCode
   ]
 }
 
@@ -131,4 +141,5 @@ output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = logAnalyticsWorkspaceName
 output AZURE_LOGIC_APP_WITHOUT_CODE_NAME string = logicAppWithoutCodeName
 output AZURE_LOGIC_APP_WITH_CODE_NAME string = logicAppWithCodeName
 output AZURE_RESOURCE_GROUP string = resourceGroupName
-output AZURE_STORAGE_ACCOUNT_NAME string = storageAccountName
+output AZURE_STORAGE_ACCOUNT_NAME_FOR_LOGIC_APP_WITHOUT_CODE string = storageAccountNameForLogicAppWithoutCode
+output AZURE_STORAGE_ACCOUNT_NAME_FOR_LOGIC_APP_WITH_CODE string = storageAccountNameForLogicAppWithCode

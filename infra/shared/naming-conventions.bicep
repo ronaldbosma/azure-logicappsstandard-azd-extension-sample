@@ -22,6 +22,10 @@ func getInstanceId(environment string, region string, instance string) string =>
 func generateInstanceId(environment string, region string) string =>
   substring(uniqueString(subscription().subscriptionId, environment, region), 0, 5)
 
+@export()
+func getStorageAccountNameForResource(resourceName string) string =>
+  'st${substring(shortenString(resourceName), 0, 9)}${uniqueString(resourceName)}'
+
 //=============================================================================
 // Shorten Names
 //=============================================================================
