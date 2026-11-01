@@ -7,14 +7,16 @@ services:
   logicAppWithoutCode:
     project: ./src/logicAppWithoutCode
     host: function
-    language: logicappsstandard
+    language: js # Logic Apps aren't natively supported by azd yet. By using js, the logic app will be zipped and deployed.
   logicAppWithCode:
     project: ./src/logicAppWithCode
     dist: Workflows
     host: function
-    language: logicappsstandard
-    customCodeProject: Functions/Functions.csproj
+    language: js # Logic Apps aren't natively supported by azd yet. By using js, the logic app will be zipped and deployed.
+    hooks:
+      prepackage:
+        shell: pwsh
+        run: ../../hooks/prepackage-logicapp-build-functions-project.ps1
+        interactive: true
 requiredVersions:
   azd: ">= 1.34.1" # azd version 1.34.1 or higher is required because we're using features from Bicep v0.47.16.
-  extensions:
-    azure.logicappsstandard: "latest"
