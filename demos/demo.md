@@ -1,7 +1,7 @@
 # Demo
 
 In this demo scenario, we will demonstrate the use of the azure.logicappsstandard azd extension.
-This template deploys two Logic Apps: one is a basic Logic App; the other has a custom code project using .NET 8.
+This template deploys two Logic Apps: one is a basic Logic App; the other has a custom code project using .NET 10.
 
 ## 1. What resources will be deployed
 
@@ -20,7 +20,7 @@ Follow the steps in the [Getting Started](/README.md#getting-started) section of
 Then review the [azure.yaml](/azure.yaml) to show how the extension can be used:
 
 1. The `logicAppWithoutCode` service shows the configuration for a basic Logic App with only workflows, no custom code or other artifacts.
-1. The `logicAppWithCode` service shows the configuration for a Logic App with a custom code project (.NET 8).
+1. The `logicAppWithCode` service shows the configuration for a Logic App with a custom code project (.NET 10).
 
 Run `azd package <service>` to package the services and review the contents of the generated `.zip` file.
 
