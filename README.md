@@ -16,7 +16,7 @@ Before you can deploy this template, make sure you have the following tools inst
   - Installing `azd` also installs the following tools:
     - [GitHub CLI](https://cli.github.com)
     - [Bicep CLI](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
-- [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+- [.NET 11 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
 
 **Required Permissions:**
 
@@ -136,7 +136,7 @@ For detailed guidance, refer to:
 
 ## Integration Tests
 
-The project includes integration tests built with **.NET 10** that validate various scenarios through the deployed Azure services.
+The project includes integration tests built with **.NET 11** that validate various scenarios through the deployed Azure services.
 The tests send the same test requests described in the [Demo](./demos/demo.md) and are located in [IntegrationTests](tests/IntegrationTests).
 They automatically locate your azd environment's `.env` file if available, to retrieve necessary configuration. In the [pipeline](#pipeline) they rely on environment variables set in the workflow.
 
