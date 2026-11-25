@@ -40,12 +40,6 @@ Once the prerequisites are installed on your machine, you can deploy this templa
    azd auth login
    ```
 
-1. Install the azure.logicappsstandard extension (_is currently a prerelease_):
-
-   ```cmd
-   azd ext install "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
-   ```
-
 1. Run the `azd up` command to provision the resources in your Azure subscription. This deployment typically takes around 3-4 minutes to complete. _(Use `azd provision` to only deploy the infrastructure.)_
 
    ```cmd
