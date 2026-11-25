@@ -2,7 +2,7 @@
 
 name: azure-logicappsstandard-azd-extension-sample
 metadata:
-  template: azure-logicappsstandard-azd-extension-sample@0.1.0
+  template: azure-logicappsstandard-azd-extension-sample@1.0.0
 services:
   logicAppWithoutCode:
     project: ./src/logicAppWithoutCode
