@@ -11,7 +11,7 @@ on:
       logicappsstandard-extension-id-or-url:
         description: "ID or URL of the azure.logicappsstandard azd extension to use"
         required: false
-        default: "https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip"
+        default: "azure.logicappsstandard"
         type: string
   pull_request:
     # Also trigger on ready_for_review to catch the transition from draft to ready state.
@@ -37,7 +37,7 @@ env:
   AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID || vars.AZURE_SUBSCRIPTION_ID }}
   # Configure the ID/URL of the azure.logicappsstandard azd extension to use
   # By using a variable, we can default to the standard extension but override this with e.g. a prerelease build if needed.
-  AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.logicappsstandard-extension-id-or-url || 'https://azuresdkartifacts.z5.web.core.windows.net/azd/extensions/pr/10058/azure-logicappsstandard.zip' }}
+  AZURE_LOGICAPPSSTANDARD_EXTENSION_ID_OR_URL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.logicappsstandard-extension-id-or-url || 'azure.logicappsstandard' }}
 
 jobs:
   # ------------------------------------------------------------
