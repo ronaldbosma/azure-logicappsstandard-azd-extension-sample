@@ -1,6 +1,6 @@
 # Sample for azure.logicappsstandard azd extension
 
-An Azure Developer CLI (`azd`) template using Bicep that demonstrates the use of the [azure.logicappsstandard extension](https://github.com/Azure/azure-dev/tree/main/cli/azd/extensions/azure.logicappsstandard). 
+An Azure Developer CLI (`azd`) template using Bicep that demonstrates the use of the [Azure Logic Apps Standard extension](https://github.com/Azure/azure-dev/tree/main/cli/azd/extensions/azure.logicappsstandard). 
 This template deploys two Logic Apps: one is a basic Logic App; the other has a custom code project using .NET 10.
 See [azure.yaml](azure.yaml) for how to use the extension and the [Getting Started](#getting-started) section for how to install it.
 
@@ -34,7 +34,7 @@ Once the prerequisites are installed on your machine, you can deploy this templa
 
    When prompted, specify the name of the environment (for example, `azdlogicappsext`). The maximum length is 30 characters.
 
-   The azure.logicappsstandard extension will be installed automatically.
+   The Azure Logic Apps Standard extension (`azure.logicappsstandard`) will be installed automatically.
 
 1. Run the `azd auth login` command to authenticate to your Azure subscription using the **Azure Developer CLI** _(if you haven't already)_.
 
