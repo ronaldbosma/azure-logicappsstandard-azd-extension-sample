@@ -28,6 +28,19 @@
       ],
       "enabled": false,
       "description": "Disable updates for specific packages in Logic App custom code projects, because these require specific versions to match the Logic App runtime."
+    },
+    {
+      "matchPackageNames": [
+        "dotnet-sdk"
+      ],
+      "matchFileNames": [
+        "src/global.json"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false,
+      "description": "Prevent .NET major SDK upgrades in global.json of Logic App projects. It should stay on current major version."
     }
   ]
 }
