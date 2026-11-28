@@ -16,6 +16,8 @@ Before you can deploy this template, make sure you have the following tools inst
   - Installing `azd` also installs the following tools:
     - [GitHub CLI](https://cli.github.com)
     - [Bicep CLI](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
+  - Required extensions:
+    - [Azure Logic Apps Standard azd extension](https://github.com/Azure/azure-dev/tree/main/cli/azd/extensions/azure.logicappsstandard)
 - [.NET 11 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
 
 **Required Permissions:**
