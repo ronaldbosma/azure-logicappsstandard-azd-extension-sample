@@ -111,11 +111,13 @@ jobs:
 
       - name: Package Logic App With Code
         run: |
+          dotnet restore ./src/logicAppWithCode/Functions/Functions.csproj --locked-mode
           azd package logicAppWithCode --output-path ./artifacts/logicapp-with-code-package.zip --no-prompt
 
       - name: Build Integration Tests
         run: |
-          dotnet build ./tests/IntegrationTests/IntegrationTests.csproj --configuration Release --output ./artifacts/integration-tests
+          dotnet restore ./tests/IntegrationTests/IntegrationTests.csproj --locked-mode
+          dotnet build ./tests/IntegrationTests/IntegrationTests.csproj --no-restore --configuration Release --output ./artifacts/integration-tests
 
       - name: Upload Logic App Without Code Package
         uses: actions/upload-artifact@v7
